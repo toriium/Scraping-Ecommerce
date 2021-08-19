@@ -1,21 +1,27 @@
 import requests
 from bs4 import BeautifulSoup
 
-baseurl = 'https://webscraper.io'
-
 headers = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36'
 }
 
-def laptops_crawler():
-    laptops_links = []
+
+def laptops_link_generator():
+    links_list = []
+    baseurl = 'https://webscraper.io'
 
     r = requests.get('https://webscraper.io/test-sites/e-commerce/allinone/computers/laptops')
     soup = BeautifulSoup(r.content, 'lxml')
     productlist = soup.find_all('div', class_='col-sm-4 col-lg-4 col-md-4')
     for item in productlist:
         for link in item.find_all('a', href=True):
-            laptops_links.append(baseurl + link['href'])
+            links_list.append(baseurl + link['href'])
+
+    return links_list
+
+
+def laptops_crawler():
+    laptops_links = laptops_link_generator()
 
     laptops_list = []
     id_laptop = 1

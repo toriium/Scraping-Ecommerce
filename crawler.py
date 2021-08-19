@@ -1,9 +1,18 @@
 import requests
 from bs4 import BeautifulSoup
+import re
 
 headers = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36'
 }
+
+
+def get_only_numbers(text_received):
+    regex_syntax = r"\D"
+    num_str = re.sub(regex_syntax, "", text_received)
+    num = int(num_str)
+
+    return num
 
 
 def laptops_link_generator():
@@ -24,12 +33,12 @@ def laptops_crawler():
     laptops_links = laptops_link_generator()
 
     laptops_list = []
-    id_laptop = 1
 
     for link in laptops_links:
         r = requests.get(link, headers=headers)
         soup = BeautifulSoup(r.content, 'lxml')
 
+        id_laptop = get_only_numbers(link)
         name = soup.find('h4', class_='').text
         price = soup.find('h4', class_='pull-right price').text
         description = soup.find('p', class_='description').text
@@ -37,21 +46,20 @@ def laptops_crawler():
 
         find_reviews = soup.find_all('p', class_='')[4]
         for text in find_reviews:
-            reviewers = str(text.strip())
+            reviews = str(text.strip())
             break
+        reviews = get_only_numbers(reviews)
 
         laptop = {
             'id_laptop': id_laptop,
             'name': name,
             'price': price,
             'description': description,
-            'reviewers': reviewers,
+            'reviews': reviews,
             'stars': stars
         }
 
-        # print('saving: ', laptop['id_laptop'])
+        print('saving: ', laptop['id_laptop'])
         laptops_list.append(laptop)
-
-        id_laptop += 1
 
     return laptops_list

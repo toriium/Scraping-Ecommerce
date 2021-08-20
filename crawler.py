@@ -55,7 +55,7 @@ def laptops_crawler():
             'stars': stars
         }
 
-        # print('saving: ', laptop['id_laptop']) # Terminal Log
+        print('saving: ', laptop['id_laptop']) # Terminal Log
         laptops_list.append(laptop)
 
     return laptops_list

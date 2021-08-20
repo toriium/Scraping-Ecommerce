@@ -11,7 +11,11 @@ def get_only_numbers(text_received):
 
 def remove_dollar_sign(text: str):
     text = text.replace('$', '')
-    num = float(text)
+    print(text)
+    try:
+        num = float(text)
+    except ValueError:
+        num = 0
     return num
 
 

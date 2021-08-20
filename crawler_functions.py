@@ -1,4 +1,18 @@
 from selenium import webdriver
+import re
+
+
+def get_only_numbers(text_received):
+    regex_syntax = r"\D"
+    num_str = re.sub(regex_syntax, "", text_received)
+    num = int(num_str)
+    return num
+
+
+def remove_dollar_sign(text: str):
+    text = text.replace('$', '')
+    num = float(text)
+    return num
 
 
 def get_prices(link):
@@ -19,10 +33,10 @@ def get_prices(link):
     price_hdd_1024 = nav.find_element_by_xpath('/html/body/div[1]/div[3]/div/div[2]/div/div/div[2]/div[1]/h4[1]').text
 
     prices = {
-        'hdd_128': price_hdd_128,
-        'hdd_256': price_hdd_256,
-        'hdd_512': price_hdd_512,
-        'hdd_1024': price_hdd_1024,
+        'hdd_128': remove_dollar_sign(price_hdd_128),
+        'hdd_256': remove_dollar_sign(price_hdd_256),
+        'hdd_512': remove_dollar_sign(price_hdd_512),
+        'hdd_1024': remove_dollar_sign(price_hdd_1024),
     }
     nav.close()
     return prices

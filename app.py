@@ -13,7 +13,6 @@ def laptops_list():
     full_datetime = actual_datetime.strftime('%d/%m/%Y %H:%M')
 
     crawler_return = {
-        'url_site': 'https://webscraper.io/test-sites/e-commerce/allinone/computers/laptops',
         'DateTime': full_datetime,
         'laptops': result_list_laptops
     }

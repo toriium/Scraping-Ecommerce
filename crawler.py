@@ -1,19 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
-import re
-from selenium_crawler import get_prices
+from crawler_functions import get_prices, get_only_numbers
 
 headers = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36'
 }
-
-
-def get_only_numbers(text_received):
-    regex_syntax = r"\D"
-    num_str = re.sub(regex_syntax, "", text_received)
-    num = int(num_str)
-
-    return num
 
 
 def laptops_link_generator():
@@ -55,13 +46,16 @@ def laptops_crawler():
         laptop = {
             'id_laptop': id_laptop,
             'name': name,
-            'prices': prices,
+            'price_hdd_128': prices['hdd_128'],
+            'price_hdd_256': prices['hdd_256'],
+            'price_hdd_512': prices['hdd_512'],
+            'price_hdd_1024': prices['hdd_1024'],
             'description': description,
             'reviews': reviews,
             'stars': stars
         }
 
-        print('saving: ', laptop['id_laptop'])
+        # print('saving: ', laptop['id_laptop']) # Terminal Log
         laptops_list.append(laptop)
 
     return laptops_list

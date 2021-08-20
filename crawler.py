@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+from selenium_crawler import get_prices
 
 headers = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36'
@@ -40,9 +41,10 @@ def laptops_crawler():
 
         id_laptop = get_only_numbers(link)
         name = soup.find('h4', class_='').text
-        price = soup.find('h4', class_='pull-right price').text
+        # price = soup.find('h4', class_='pull-right price').text
         description = soup.find('p', class_='description').text
         stars = len(soup.find_all('span', class_='glyphicon glyphicon-star'))
+        prices = get_prices(link)
 
         find_reviews = soup.find_all('p', class_='')[4]
         for text in find_reviews:
@@ -53,7 +55,7 @@ def laptops_crawler():
         laptop = {
             'id_laptop': id_laptop,
             'name': name,
-            'price': price,
+            'prices': prices,
             'description': description,
             'reviews': reviews,
             'stars': stars

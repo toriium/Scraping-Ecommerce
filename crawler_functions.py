@@ -1,4 +1,4 @@
-from selenium import webdriver
+from selenium.webdriver import Chrome
 import re
 
 
@@ -19,21 +19,23 @@ def remove_dollar_sign(text: str):
 
 
 def get_prices(link):
-    nav = webdriver.Chrome()
+    browser = Chrome()
 
-    nav.get(link)
+    browser.get(link)
 
-    nav.find_element_by_xpath("/html/body/div[1]/div[3]/div/div[2]/div/div/div[2]/div[2]/button[1]").click()
-    price_hdd_128 = nav.find_element_by_xpath('/html/body/div[1]/div[3]/div/div[2]/div/div/div[2]/div[1]/h4[1]').text
+    price_element = browser.find_element_by_css_selector('[class="pull-right price"]')
 
-    nav.find_element_by_xpath('/html/body/div[1]/div[3]/div/div[2]/div/div/div[2]/div[2]/button[2]').click()
-    price_hdd_256 = nav.find_element_by_xpath('/html/body/div[1]/div[3]/div/div[2]/div/div/div[2]/div[1]/h4[1]').text
+    browser.find_element_by_css_selector('[value="128"]').click()
+    price_hdd_128 = price_element.text
 
-    nav.find_element_by_xpath('/html/body/div[1]/div[3]/div/div[2]/div/div/div[2]/div[2]/button[3]').click()
-    price_hdd_512 = nav.find_element_by_xpath('/html/body/div[1]/div[3]/div/div[2]/div/div/div[2]/div[1]/h4[1]').text
+    browser.find_element_by_css_selector('[value="256"]').click()
+    price_hdd_256 = price_element.text
 
-    nav.find_element_by_xpath('/html/body/div[1]/div[3]/div/div[2]/div/div/div[2]/div[2]/button[4]').click()
-    price_hdd_1024 = nav.find_element_by_xpath('/html/body/div[1]/div[3]/div/div[2]/div/div/div[2]/div[1]/h4[1]').text
+    browser.find_element_by_css_selector('[value="512"]').click()
+    price_hdd_512 = price_element.text
+
+    browser.find_element_by_css_selector('[value="1024"]').click()
+    price_hdd_1024 = price_element.text
 
     prices = {
         'hdd_128': remove_dollar_sign(price_hdd_128),
@@ -41,5 +43,5 @@ def get_prices(link):
         'hdd_512': remove_dollar_sign(price_hdd_512),
         'hdd_1024': remove_dollar_sign(price_hdd_1024),
     }
-    nav.close()
+    browser.close()
     return prices

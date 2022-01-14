@@ -1,7 +1,8 @@
 import time
-import pprint
+from pprint import pprint
 
 from playwright.sync_api import sync_playwright
+
 from crawler_functions import get_only_numbers, remove_dollar_sign
 
 
@@ -53,7 +54,7 @@ def crawler():
 
     browser.close()
     playwright.stop()
-    pprint.pprint(laptops_list)
+    pprint(laptops_list)
 
 
 if __name__ == '__main__':

@@ -10,11 +10,11 @@ def laptops_link_generator(page):
     baseurl = 'https://webscraper.io'
 
     page.goto('https://webscraper.io/test-sites/e-commerce/allinone/computers/laptops')
-    links = page.query_selector_all('[class="caption"]')
+    links = page.query_selector_all('//div[@class="caption"]/h4[2]/a')
     for link in links:
-        href = link.query_selector_all('h4')[1].query_selector('a').get_attribute('href')
+        href = link.get_attribute('href')
         links_list.append(baseurl + str(href))
-        break
+        # break
 
     return links_list
 

@@ -20,7 +20,7 @@ class PlaywrightManager:
     @classmethod
     def get_page(cls):
         if not cls.__page:
-            cls.creat_playwright_page()
+            cls.create_playwright_page()
         return cls.__page
 
     @classmethod

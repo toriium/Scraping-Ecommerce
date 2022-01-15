@@ -1,32 +1,8 @@
 import time
 from pprint import pprint
 
-from playwright.sync_api import sync_playwright
-
+from playwright_manager import PlaywrightManager
 from crawler_functions import get_only_numbers, remove_dollar_sign
-
-
-class PlaywrightManager:
-    __playwright = None
-    __browser = None
-    __page = None
-
-    @classmethod
-    def create_playwright_page(cls):
-        cls.__playwright = sync_playwright().start()
-        cls.__browser = cls.__playwright.chromium.launch(headless=False, slow_mo=50)
-        cls.__page = cls.__browser.new_page()
-
-    @classmethod
-    def get_page(cls):
-        if not cls.__page:
-            cls.create_playwright_page()
-        return cls.__page
-
-    @classmethod
-    def close_page(cls):
-        cls.__browser.close()
-        cls.__playwright.stop()
 
 
 def laptops_link_generator(page, brand: str):

@@ -35,11 +35,17 @@ def crawler():
 
         id_laptop = get_only_numbers(product)
         name = page.query_selector_all('h4')[1].text_content()
+        description = page.query_selector('[class="description"]').text_content()
+        stars = len(page.query_selector_all('//div[@class="ratings"]/p/span'))
+        reviews = get_only_numbers(page.query_selector('//div[@class="ratings"]/p').text_content())
+
         price128 = page.query_selector('[class="pull-right price"]').text_content()
         page.query_selector('[value="256"]').click()
         price256 = page.query_selector('[class="pull-right price"]').text_content()
         page.query_selector('[value="512"]').click()
         price512 = page.query_selector('[class="pull-right price"]').text_content()
+        page.query_selector('[value="1024"]').click()
+        price1024 = page.query_selector('[class="pull-right price"]').text_content()
 
         laptop = {
             'id_laptop': id_laptop,
@@ -47,6 +53,10 @@ def crawler():
             'price_hdd_128': price128,
             'price_hdd_256': price256,
             'price_hdd_512': price512,
+            'price_hdd_1024': price1024,
+            'description': description,
+            'reviews': reviews,
+            'stars': stars
         }
 
         # print('saving: ', laptop['id_laptop']) # Terminal Log

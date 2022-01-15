@@ -6,6 +6,24 @@ from playwright.sync_api import sync_playwright
 from crawler_functions import get_only_numbers, remove_dollar_sign
 
 
+class PlaywrightManager:
+    __playwright = None
+    __browser = None
+    __page = None
+
+    @classmethod
+    def get_page(cls):
+        cls.__playwright = sync_playwright().start()
+        cls.__browser = cls.__playwright.chromium.launch(headless=False, slow_mo=50)
+        cls.__page = cls.__browser.new_page()
+        return cls.__page
+
+    @classmethod
+    def close_page(cls):
+        cls.__browser.close()
+        cls.__playwright.stop()
+
+
 def laptops_link_generator(page, brand: str):
     links_list = []
     baseurl = 'https://webscraper.io'
@@ -21,13 +39,9 @@ def laptops_link_generator(page, brand: str):
 
 
 def crawler(brand: str):
-    playwright = sync_playwright().start()
-    browser = playwright.chromium.launch(headless=False, slow_mo=50)
-    page = browser.new_page()
-
+    page = PlaywrightManager.get_page()
     laptops_links = laptops_link_generator(page=page, brand=brand)
 
-    # pega a infromação dos laptops
     laptops_list = []
     for product in laptops_links:
         page.goto(product)
@@ -61,8 +75,7 @@ def crawler(brand: str):
         # print('saving: ', laptop['id_laptop']) # Terminal Log
         laptops_list.append(laptop)
 
-    browser.close()
-    playwright.stop()
+    PlaywrightManager.close_page()
     pprint(laptops_list)
 
 

@@ -12,10 +12,15 @@ class PlaywrightManager:
     __page = None
 
     @classmethod
-    def get_page(cls):
+    def create_playwright_page(cls):
         cls.__playwright = sync_playwright().start()
         cls.__browser = cls.__playwright.chromium.launch(headless=False, slow_mo=50)
         cls.__page = cls.__browser.new_page()
+
+    @classmethod
+    def get_page(cls):
+        if not cls.__page:
+            cls.creat_playwright_page()
         return cls.__page
 
     @classmethod

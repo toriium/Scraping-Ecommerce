@@ -6,27 +6,26 @@ from playwright.sync_api import sync_playwright
 from crawler_functions import get_only_numbers, remove_dollar_sign
 
 
-def laptops_link_generator(page):
+def laptops_link_generator(page, brand: str):
     links_list = []
     baseurl = 'https://webscraper.io'
 
     page.goto('https://webscraper.io/test-sites/e-commerce/allinone/computers/laptops')
-    links = page.query_selector_all('//div[@class="caption"]/h4[2]/a')
-    for link in links:
-        href = link.get_attribute('href')
-        links_list.append(baseurl + str(href))
-        # break
-
+    elements = page.query_selector_all('//div[@class="caption"]/h4[2]/a')
+    for element in elements:
+        if brand.upper() in element.get_attribute('title').upper():
+            href = element.get_attribute('href')
+            links_list.append(baseurl + str(href))
+            # break
     return links_list
 
 
-def crawler():
+def crawler(brand: str):
     playwright = sync_playwright().start()
     browser = playwright.chromium.launch(headless=False, slow_mo=50)
     page = browser.new_page()
 
-    # pega cada um dos links dos laptops
-    laptops_links = laptops_link_generator(page=page)
+    laptops_links = laptops_link_generator(page=page, brand=brand)
 
     # pega a infromação dos laptops
     laptops_list = []
@@ -68,4 +67,4 @@ def crawler():
 
 
 if __name__ == '__main__':
-    crawler()
+    crawler(brand='lenovo')

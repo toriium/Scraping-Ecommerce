@@ -130,3 +130,5 @@ dmypy.json
 
 .idea/
 chromedriver.exe
+*/node_modules
+package-lock.json

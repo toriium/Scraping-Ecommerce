@@ -20,7 +20,8 @@ func laptopsLinkGenerator(brand string) []string {
 	baseurl := "https://webscraper.io"
 	var linksList []string
 
-	collector := colly.NewCollector()
+	ua := "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+	collector := colly.NewCollector(colly.UserAgent(ua))
 
 	collector.OnHTML(`div[class="caption"] > h4:nth-child(2) > a`, func(e *colly.HTMLElement) {
 

@@ -7,11 +7,12 @@ import (
 )
 
 type Item struct {
-	IdLaptop    string `json:"idLaptop"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Stars       string `json:"stars"`
-	Reviews     string `json:"reviews"`
+	IdLaptop    string `json:"IdLaptop"`
+	Name        string `json:"Name"`
+	Description string `json:"Description"`
+	Stars       string `json:"Stars"`
+	Reviews     string `json:"Reviews"`
+	Price       string `json:"Price"`
 }
 
 func laptopsLinkGenerator(brand string) []string {
@@ -51,6 +52,7 @@ func crawler(brand string) []Item {
 				Description: element.ChildText(`[class="description"]`),
 				Stars:       string(rune(stars)),
 				Reviews:     element.ChildText(`div[class="ratings"]>p`),
+				Price:       element.ChildText(`[class="pull-right price"]`),
 			}
 
 			laptopsList = append(laptopsList, item)
